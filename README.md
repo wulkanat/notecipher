@@ -12,9 +12,6 @@ Showcase app for [SQLCipher for Android](http://sqlcipher.net/sqlcipher-for-andr
 
 ## License and Credits 
 
-* Notepad Icon originally from
-    http://yaromanzarek.deviantart.com/art/iPhone-style-Notepad-icon-133822563
-
 This project is licensed under the Apache version 2.0 license
 
 Copyright (C) 2021 Wieland Schöbl <wulkanat@gmail.com>
