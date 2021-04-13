@@ -13,7 +13,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon" />
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/textView1"

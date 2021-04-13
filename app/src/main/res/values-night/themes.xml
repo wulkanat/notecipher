@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.Notecipher" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#ce93d8</item>
-        <item name="colorPrimaryVariant">#7b1fa2</item>
+        <item name="colorPrimary">#80deea</item>
+        <item name="colorPrimaryVariant">#b4ffff</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#80cbc4</item>
-        <item name="colorSecondaryVariant">#80cbc4</item>
+        <item name="colorSecondary">#f48fb1</item>
+        <item name="colorSecondaryVariant">#ffc1e3</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/background</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
