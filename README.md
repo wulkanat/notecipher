@@ -2,7 +2,9 @@
 
 A simple and secure note taking app previously known as notepadbot.
 
-This is a fork and partial rewrite of the original NoteCipher in order to make it work on modern Android versions.
+This is a fork and partial rewrite and modernization
+of the original NoteCipher in order to make it work on modern Android versions
+(and look a little nicer).
 
 Showcase app for [SQLCipher for Android](http://sqlcipher.net/sqlcipher-for-android) and [CacheWord](https://github.com/guardianproject/cacheword).
 
