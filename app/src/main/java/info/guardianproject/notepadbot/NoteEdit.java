@@ -104,23 +104,23 @@ public class NoteEdit extends AppCompatActivity implements
         super.onCreateOptionsMenu(menu);
 
         menu.add(0, SAVE_ID, 0, R.string.menu_save)
-	        .setIcon(R.drawable.save)
+	        .setIcon(R.drawable.ic_save)
 	    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         menu.add(0, SHARE_ID, 0, R.string.menu_share)
-	        .setIcon(R.drawable.share)
+	        .setIcon(R.drawable.ic_share)
 	    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         // if it's an image add export button, else bigger/smaller buttons
         if (mBlob != null) {
             menu.add(0, VIEW_ID, 0, R.string.menu_view)
-				.setIcon(R.drawable.export)
+				.setIcon(R.drawable.ic_import_export)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         } else {
         	menu.add(0, SMALLER_ID, 0, R.string.menu_smaller)
-		        .setIcon(R.drawable.smaller)
+		        .setIcon(R.drawable.ic_zoom_out)
 		    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             menu.add(0, BIGGER_ID, 0, R.string.menu_bigger)
-		        .setIcon(R.drawable.bigger)
+		        .setIcon(R.drawable.ic_zoom_in)
 		    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 

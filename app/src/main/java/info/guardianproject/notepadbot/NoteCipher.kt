@@ -151,15 +151,15 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
         super.onCreateOptionsMenu(menu)
 
         menu.add(0, INSERT_ID, 0, R.string.menu_insert).apply {
-            setIcon(R.drawable.new_content)
+            setIcon(R.drawable.ic_add)
             setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         }
         menu.add(0, LOCK_ID, 0, R.string.menu_lock).apply {
-            setIcon(R.drawable.lock)
+            setIcon(R.drawable.ic_lock)
             setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         }
         menu.add(0, SETTINGS_ID, 0, R.string.settings).apply {
-            setIcon(R.drawable.settings)
+            setIcon(R.drawable.ic_settings)
             setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         }
 

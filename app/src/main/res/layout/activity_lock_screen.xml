@@ -55,7 +55,8 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/lock_screen_passphrase_not_set_enter"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:autofillHints="password" />
                     </LinearLayout>
 
                     <LinearLayout
