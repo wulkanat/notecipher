@@ -82,6 +82,8 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
             SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
         notesListView!!.adapter = notesCursorAdapter
+
+        findViewById<View>(R.id.fab).setOnClickListener { createNote() }
     }
 
     override fun onPause() {
@@ -150,10 +152,6 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 
-        menu.add(0, INSERT_ID, 0, R.string.menu_insert).apply {
-            setIcon(R.drawable.ic_add)
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        }
         menu.add(0, LOCK_ID, 0, R.string.menu_lock).apply {
             setIcon(R.drawable.ic_lock)
             setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
@@ -168,10 +166,6 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            INSERT_ID -> {
-                createNote()
-                return true
-            }
             RE_KEY_ID -> return true
             LOCK_ID -> {
                 if (!mCacheWord!!.isLocked) mCacheWord!!.manuallyLock()
