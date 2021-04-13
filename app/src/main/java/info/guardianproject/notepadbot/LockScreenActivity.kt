@@ -142,7 +142,7 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
                         mCacheWord.setPassphrase(mNewPassphrase.text.toString().toCharArray())
                     } catch (e: GeneralSecurityException) {
                         // TODO initialization failed
-                        Log.e(TAG, "Cache word pass initialization failed: " + e.message)
+                        Log.e(TAG, "Cache word pass initialization failed: ${e.message}")
                     }
                 }
             }
@@ -161,7 +161,7 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
             } catch (e: GeneralSecurityException) {
                 mEnterPassphrase.setText("")
                 // TODO implement try again and wipe if fail
-                Log.e(TAG, "Cache word pass verification failed: " + e.message)
+                Log.e(TAG, "Cache word pass verification failed: ${e.message}")
             }
         }
         mEnterPassphrase.setOnEditorActionListener(OnEditorActionListener { v, actionId, _ ->
