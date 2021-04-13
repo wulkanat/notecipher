@@ -14,6 +14,7 @@ class LinedEditText(context: Context?, attrs: AttributeSet?) :
     AppCompatEditText(context!!, attrs) {
 
     private val mRect: Rect = Rect()
+    @Suppress("DEPRECATION")
     private val mPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
         color = resources.getColor(R.color.gray)
@@ -22,7 +23,7 @@ class LinedEditText(context: Context?, attrs: AttributeSet?) :
 
     override fun onDraw(canvas: Canvas) {
         val height = height
-        var curHeight = 0
+        var curHeight: Int
         val baseline = getLineBounds(0, mRect)
         if (showLines) {
             curHeight = baseline + 3

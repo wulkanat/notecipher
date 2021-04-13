@@ -126,6 +126,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
 
     private fun fillData() {
         if (mCacheWord!!.isLocked) return
+        @Suppress("DEPRECATION")
         supportLoaderManager.restartLoader(
             VIEW_ID,
             null,
@@ -218,6 +219,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
         if (mCacheWord!!.isLocked) {
             return
         }
+        @Suppress("DEPRECATION")
         supportLoaderManager.restartLoader(
             SHARE_ID,
             null,
@@ -257,6 +259,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
 
     private fun viewEntry(id: Long) {
         if (mCacheWord!!.isLocked) return
+        @Suppress("DEPRECATION")
         supportLoaderManager.restartLoader(
             VIEW_ID,
             null,
@@ -348,7 +351,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
             setIcon(android.R.drawable.ic_dialog_alert)
             setTitle(R.string.app_name)
             setMessage(R.string.confirm_delete)
-            setPositiveButton(android.R.string.yes) { _, _ -> // User clicked OK so go ahead and delete
+            setPositiveButton(android.R.string.ok) { _, _ -> // User clicked OK so go ahead and delete
                 contentResolver?.delete(dataStream!!, null, null)
                     ?: Toast.makeText(
                         this@NoteCipher,
@@ -356,7 +359,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
                         Toast.LENGTH_SHORT
                     ).show()
             }
-            setNegativeButton(android.R.string.no) { _, _ -> }
+            setNegativeButton(android.R.string.cancel) { _, _ -> }
         }.show()
     }
 

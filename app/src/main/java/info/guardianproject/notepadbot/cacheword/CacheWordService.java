@@ -234,7 +234,7 @@ public class CacheWordService extends Service implements Observer {
 
     private Notification buildNotification() {
 
-        NotificationCompat.Builder b = new NotificationCompat.Builder(this);
+        NotificationCompat.Builder b = new NotificationCompat.Builder(this, "Passphrase");
         b.setSmallIcon(R.drawable.cacheword_notification_icon);
         b.setContentTitle(getText(R.string.cacheword_notification_cached_title));
         b.setContentText(getText(R.string.cacheword_notification_cached_message));

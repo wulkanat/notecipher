@@ -51,7 +51,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             mCacheWord.timeoutSeconds = timeout
             dialog.dismiss()
         }
-        builder.setNegativeButton("Cancel") { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        builder.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int -> dialog.cancel() }
         builder.show()
     }
 

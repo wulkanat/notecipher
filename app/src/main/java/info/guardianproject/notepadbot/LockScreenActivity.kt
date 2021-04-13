@@ -167,7 +167,7 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
         mEnterPassphrase.setOnEditorActionListener(OnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_NULL || actionId == EditorInfo.IME_ACTION_GO) {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                val threadHandler = Handler()
+                @Suppress("DEPRECATION") val threadHandler = Handler()
                 imm.hideSoftInputFromWindow(v.windowToken, 0, object : ResultReceiver(
                     threadHandler
                 ) {

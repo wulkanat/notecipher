@@ -354,10 +354,10 @@ public class NoteEdit extends AppCompatActivity implements
         Bundle extras = getIntent().getExtras();
 
         if (mRowId != -1) {
-            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+            LoaderManager.getInstance(this).restartLoader(LOADER_ID, null, this);
         } else if (extras != null) {
             mRowId = extras.getLong(NotesDbAdapter.KEY_ROWID);
-            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+            LoaderManager.getInstance(this).restartLoader(LOADER_ID, null, this);
         } else {
         	mImageView.setVisibility(View.GONE);
         }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -44,7 +45,8 @@ public class NoteUtils {
 
     public static File getExternalFilesDirEclair(Context ctx, Object object) {
         String packageName = ctx.getPackageName();
-        File externalPath = Environment.getExternalStorageDirectory();
+        // TODO: evaluate if this works
+        File externalPath = ctx.getExternalFilesDir(null);
         File appFiles = new File(externalPath.getAbsolutePath() +
                 "/Android/data/" + packageName + "/files");
 
