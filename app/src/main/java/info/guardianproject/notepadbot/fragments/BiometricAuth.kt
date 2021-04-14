@@ -61,8 +61,8 @@ class BiometricAuth(private val fragment: Fragment) {
      */
     fun authenticate(
         password: String?,
-        onFail: () -> Unit = {},
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit = {},
+        onFail: () -> Unit = {}
     ) {
         password ?: run {
             val encryptedPassword = fragment.requireContext()
@@ -122,8 +122,8 @@ class BiometricAuth(private val fragment: Fragment) {
     fun setPassword(
         password: String,
         userBiometric: Boolean = false,
-        onFail: () -> Unit = {},
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit = {},
+        onFail: () -> Unit = {}
     ) {
         if (userBiometric) {
             // https://developer.android.com/training/sign-in/biometric-auth#kotlin

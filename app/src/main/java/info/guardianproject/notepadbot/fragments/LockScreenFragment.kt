@@ -1,25 +1,31 @@
 package info.guardianproject.notepadbot.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputLayout
 import info.guardianproject.notepadbot.R
+import info.guardianproject.notepadbot.databinding.LockscreenFragmentBinding
 
 class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
-    private val passwordText by lazy { requireView().findViewById<TextInputLayout>(R.id.password_input) }
-    private val settingsButton by lazy { requireView().findViewById<Button>(R.id.continue_without_encryption_button) }
-    private val unlockButton by lazy { requireView().findViewById<Button>(R.id.unlock_button) }
-    private val biometricButton by lazy { requireView().findViewById<Button>(R.id.use_biometric_button) }
-    private val biometricHint by lazy { requireView().findViewById<TextView>(R.id.biometric_hint) }
+    private var _binding: LockscreenFragmentBinding? = null
+    private val binding get() = _binding!!
     private val authenticator by lazy { BiometricAuth(this) }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = LockscreenFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        passwordText.editText?.setOnEditorActionListener { _, actionId, _ ->
+        binding.passwordInput.editText?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     unlock()
@@ -29,28 +35,29 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
             }
         }
 
-        settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.settingsFragment)
+        binding.continueWithoutEncryptionButton.setOnClickListener {
+            LockScreenFragmentDirections.actionLockScreenFragmentToSettingsFragment().let {
+                findNavController().navigate(it)
+            }
         }
 
-        unlockButton.setOnClickListener { unlock() }
+        binding.unlockButton.setOnClickListener { unlock() }
 
         if (!authenticator.canUseBiometric()) {
-            biometricButton.isEnabled = false
-            biometricHint.visibility = View.VISIBLE
+            binding.useBiometricButton.isEnabled = false
+            binding.useBiometricButton.visibility = View.VISIBLE
         }
     }
 
     private fun unlock() {
-        unlockButton.isEnabled = false
-        biometricButton.isEnabled = false
+        binding.unlockButton.isEnabled = false
+        binding.useBiometricButton.isEnabled = false
 
-        authenticator.authenticate(passwordText.editText?.text.toString(),
-            onFail = {
-                passwordText.error = "Wrong Password"
-                unlockButton.isEnabled = true
-                biometricButton.isEnabled = authenticator.canUseBiometric()
-            },
-            onSuccess = { findNavController().navigateUp() })
+        authenticator.authenticate(binding.passwordInput.editText?.text.toString(),
+        onFail = {
+            binding.passwordInput.error = "Wrong Password"
+            binding.unlockButton.isEnabled = true
+            binding.useBiometricButton.isEnabled = authenticator.canUseBiometric()
+        })
     }
 }

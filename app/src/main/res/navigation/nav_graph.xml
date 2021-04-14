@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/lockScreenFragment"
         android:name="info.guardianproject.notepadbot.fragments.LockScreenFragment"
-        android:label="LockScreenFragment"
+        android:label="Lock Screen"
         tools:layout="@layout/lockscreen_fragment">
         <action
             android:id="@+id/action_lockScreenFragment_to_settingsFragment"
@@ -17,14 +17,14 @@
     <fragment
         android:id="@+id/notesFragment"
         android:name="info.guardianproject.notepadbot.fragments.NotesFragment"
-        android:label="NotesFragment"
+        android:label="Notes"
         tools:layout="@layout/notes_fragment">
-        <action
-            android:id="@+id/action_notesFragment_to_lockScreenFragment"
-            app:destination="@id/lockScreenFragment" />
         <action
             android:id="@+id/action_notesFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_notesFragment_to_lockScreenFragment"
+            app:destination="@id/lockScreenFragment" />
         <action
             android:id="@+id/action_notesFragment_to_setupFragment"
             app:destination="@id/setupFragment" />
@@ -32,11 +32,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="info.guardianproject.notepadbot.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Settings" />
     <fragment
         android:id="@+id/setupFragment"
         android:name="info.guardianproject.notepadbot.fragments.SetupFragment"
-        android:label="SetupFragment"
+        android:label="Setup"
         tools:layout="@layout/setup_fragment" >
         <action
             android:id="@+id/action_setupFragment_to_settingsFragment"

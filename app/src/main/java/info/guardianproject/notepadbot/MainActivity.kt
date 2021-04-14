@@ -2,77 +2,104 @@ package info.guardianproject.notepadbot
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
 import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 import info.guardianproject.notepadbot.cacheword.ICacheWordSubscriber
+import info.guardianproject.notepadbot.databinding.MainActivityBinding
 
-class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscriber {
-    private val bottomAppBar by lazy { findViewById<BottomAppBar>(R.id.bottom_app_bar) }
-    private val fab by lazy { findViewById<FloatingActionButton>(R.id.fab) }
-    private val navHostFragment: NavHostFragment by lazy {
-        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-    }
-    private val navController by lazy { NavHostFragment.findNavController(navHostFragment) }
+class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
+    private var _binding: MainActivityBinding? = null
+    private val binding get() = _binding!!
 
-    val cacheWordSettings by lazy { CacheWordSettings(applicationContext) }
-    val cacheWord by lazy { CacheWordActivityHandler(this, cacheWordSettings) }
+    private var _cacheWord: CacheWordActivityHandler? = null
+    val cacheWord get() = _cacheWord!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        _binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        _cacheWord = CacheWordActivityHandler(this, CacheWordSettings(applicationContext))
 
         // Apply the Google PRNG fixes to properly seed SecureRandom
         PRNGFixes.apply()
 
-        setSupportActionBar(bottomAppBar)
+        setSupportActionBar(binding.bottomAppBar)
+        val navController = findNavController()
         setupActionBarWithNavController(this, navController)
+        // get around some weird behavior
+        navController.navigate(R.id.lockScreenFragment)
+        binding.bottomAppBar.visibility = View.GONE
+        binding.fab.hide()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(bottomAppBar) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomAppBar) { v, insets ->
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(bottom = systemBarInsets.bottom)
             insets
         }
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { controller, destination, _ ->
             when (destination.id) {
-                R.id.notesFragment -> fab.show()
-                else -> fab.hide()
+                R.id.lockScreenFragment, R.id.setupFragment -> {
+                    binding.bottomAppBar.performHide()
+                    if (!cacheWord.isLocked) cacheWord.manuallyLock()
+                }
+                else -> {
+                    binding.bottomAppBar.visibility = View.VISIBLE
+                    binding.bottomAppBar.performShow()
+                }
             }
             when (destination.id) {
-                R.id.lockScreenFragment, R.id.setupFragment -> supportActionBar?.hide()
-                else -> supportActionBar?.show()
+                R.id.notesFragment -> binding.fab.show()
+                else -> binding.fab.hide()
             }
         }
     }
 
+    private fun findNavController(): NavController {
+        val navHostFragment: NavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        return NavHostFragment.findNavController(navHostFragment)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        return item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return findNavController().navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        if (findNavController().currentBackStackEntry?.destination?.id == R.id.lockScreenFragment) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onCacheWordUninitialized() {
-        // noop
+        findNavController().navigate(R.id.setupFragment)
     }
 
     override fun onCacheWordLocked() {
-        // noop
+        findNavController().navigate(R.id.lockScreenFragment)
     }
 
     override fun onCacheWordOpened() {
-        // noop
+        findNavController().apply {
+            popBackStack(R.id.notesFragment, false)
+        }
     }
 
     override fun onPause() {
