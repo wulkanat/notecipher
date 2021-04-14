@@ -12,12 +12,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import info.guardianproject.notepadbot.App
 import info.guardianproject.notepadbot.MainActivity
 import info.guardianproject.notepadbot.NConstants
 import info.guardianproject.notepadbot.R
-import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
-import info.guardianproject.notepadbot.cacheword.Constants
 import info.guardianproject.notepadbot.cacheword.PassphraseSecrets
 import java.io.IOException
 
@@ -28,17 +25,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
-        findPreference<Preference>(Constants.SHARED_PREFS_TIMEOUT_SECONDS)!!
+        if (mCacheWord.isLocked) {
+            findPreference<Preference>(getString(R.string.preference_disable_encryption))?.apply { isEnabled = false }
+            findPreference<Preference>(getString(R.string.preference_change_lock_timeout))?.apply { isEnabled = false }
+            findPreference<Preference>(getString(R.string.preference_change_passphrase))?.apply { isEnabled = false }
+            findPreference<Preference>(getString(R.string.preference_use_biometric))?.apply { isEnabled = false }
+        }
+
+        findPreference<Preference>(getString(R.string.preference_change_lock_timeout))!!
             .setOnPreferenceClickListener {
                 changeTimeoutPrompt()
                 true
             }
-        findPreference<Preference>(Constants.SHARED_PREFS_VIBRATE)!!
+        findPreference<Preference>(getString(R.string.preference_vibrate_when_unlocked))!!
             .setOnPreferenceChangeListener { _, newValue ->
                 mCacheWord.vibrateSetting = (newValue as Boolean)
                 true
             }
-        findPreference<Preference>(Constants.SHARED_PREFS_SECRETS)!!
+        findPreference<Preference>(getString(R.string.preference_change_passphrase))!!
             .setOnPreferenceChangeListener { _, newValue ->
                 try {
                     val pass = (newValue as String).toCharArray()

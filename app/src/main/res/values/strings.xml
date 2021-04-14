@@ -60,7 +60,16 @@
     <string name="use_lines_in_notes_summ">If enabled, empty lines will be displayed on all notes to resemble a notepad</string>
     <string name="vibrate_when_unlocked">Vibrate when unlocked</string>
     <string name="vibrate_when_unlocked_summ">If enabled, the device will vibrate every time NoteCipher is unlocked with a passphrase</string>
-    <string name="change_passphrase">Change Passphrase</string>
+    <string name="preference_change_passphrase">Change Passphrase</string>
     <string name="new_note">New Note</string>
 
+    <!-- Preference Keys -->
+    <string name="preference_use_lines">use_lines</string>
+    <string name="preference_vibrate_when_unlocked">cacheword_vibrate</string>
+    <string name="preference_theme">theme</string>
+    <string name="preference_disable_encryption">disable_encryption</string>
+    <string name="preference_change_lock_timeout">cacheword_timeout_seconds</string>
+    <string name="preference_change_password">encrypted_secrets</string>
+    <string name="preference_use_biometric">use_biometric</string>
+    <string name="preference_reset_data">reset_data</string>
 </resources>

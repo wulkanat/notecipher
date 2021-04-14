@@ -9,11 +9,11 @@
             android:title="@string/use_lines_in_notes" />
         <CheckBoxPreference
             android:defaultValue="@bool/cacheword_vibrate_default"
-            android:key="cacheword_vibrate"
+            android:key="@string/preference_vibrate_when_unlocked"
             android:summary="@string/vibrate_when_unlocked_summ"
             android:title="@string/vibrate_when_unlocked" />
         <ListPreference
-            android:key="theme"
+            android:key="@string/preference_theme"
             android:enabled="false"
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
@@ -22,20 +22,20 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Security">
         <SwitchPreference
-            android:key="use_encryption"
+            android:key="@string/preference_disable_encryption"
             android:title="Disable Encryption"
             app:enabled="false"
             android:icon="@drawable/ic_no_encryption"
             android:summary="Disabling encryption removes all security measures that prevent other people from accessing your notes."/>
         <Preference
-            android:key="cacheword_timeout_seconds"
+            android:key="@string/preference_change_lock_timeout"
             android:title="@string/change_timeout_prompt_title" />
         <EditTextPreference
-            android:dialogTitle="@string/change_passphrase"
-            android:key="encrypted_secrets"
-            android:title="@string/change_passphrase" />
+            android:dialogTitle="@string/preference_change_passphrase"
+            android:key="@string/preference_change_passphrase"
+            android:title="@string/preference_change_passphrase" />
         <SwitchPreference
-            android:key="use_biometric_auth"
+            android:key="@string/preference_use_biometric"
             android:title="Use Biometric Authentication"
             android:icon="@drawable/ic_fingerprint"
             android:summary="Use the biometric hardware of the device to unlock your notes">
@@ -44,7 +44,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Danger Zone">
         <Preference
-            android:key="reset"
+            android:key="@string/preference_reset_data"
             android:title="Reset all data"
             android:icon="@drawable/ic_erase"
             android:summary="There is no way to recover your password. If you lost yours, you can reset all data here."/>

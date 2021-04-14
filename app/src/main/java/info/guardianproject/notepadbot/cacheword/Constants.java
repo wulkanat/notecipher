@@ -2,7 +2,6 @@
 package info.guardianproject.notepadbot.cacheword;
 
 public class Constants {
-
     // Service class name
     public static final String SERVICE_CLASS_NAME = "info.guardianproject.notepadbot.cacheword.CacheWordService";
 
@@ -35,7 +34,6 @@ public class Constants {
     public static final int STATE_UNLOCKED = 2;
 
     // Crypto constants
-
     public static final int PBKDF2_SALT_LEN_BYTES   = 16;  // bytes, 128 bits
     public static final int AES_KEY_LEN_BITS        = 256; // bits
     public static final int GCM_IV_LEN_BYTES        = 12;  // 96 bits
@@ -43,5 +41,4 @@ public class Constants {
     public static final int PBKDF2_KEY_LEN_BITS     = 128; // bits
     public static final int PBKDF2_ITER_SAMPLES     = 30;  // number of samples to run for the adaptive iteration calibration
     public static final int PBKDF2_TARGET_MILLIS    = 1000; // the number of milliseconds to target w/ pbkdf2 iterations
-
 }
