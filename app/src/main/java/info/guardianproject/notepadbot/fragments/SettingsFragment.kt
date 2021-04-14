@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import info.guardianproject.notepadbot.App
+import info.guardianproject.notepadbot.MainActivity
 import info.guardianproject.notepadbot.NConstants
 import info.guardianproject.notepadbot.R
 import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
@@ -22,9 +23,7 @@ import java.io.IOException
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private val activity: Activity by lazy { requireActivity() }
-    private val mCacheWord by lazy {
-        CacheWordActivityHandler(activity, (activity.application as App).cWSettings)
-    }
+    private val mCacheWord by lazy { (activity as MainActivity).cacheWord }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
@@ -92,15 +91,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             .setNegativeButton("Cancel") { dialog: DialogInterface, _: Int -> dialog.cancel() }
             .show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mCacheWord.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mCacheWord.onResume()
     }
 }

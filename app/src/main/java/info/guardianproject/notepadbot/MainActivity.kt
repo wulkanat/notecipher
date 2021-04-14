@@ -11,6 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.google.android.material.bottomappbar.BottomAppBar
+import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
+import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 import info.guardianproject.notepadbot.cacheword.ICacheWordSubscriber
 
 class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscriber {
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscr
         supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
     }
     private val navController by lazy { NavHostFragment.findNavController(navHostFragment) }
+
+    val cacheWordSettings by lazy { CacheWordSettings(applicationContext) }
+    val cacheWord by lazy { CacheWordActivityHandler(this, cacheWordSettings) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,5 +60,15 @@ class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscr
 
     override fun onCacheWordOpened() {
         // noop
+    }
+
+    override fun onPause() {
+        super.onPause()
+        cacheWord.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cacheWord.onResume()
     }
 }

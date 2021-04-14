@@ -80,43 +80,6 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
 
     }
 
-    private fun generateSecretKey(keyGenParameterSpec: KeyGenParameterSpec) {
-        val keyGenerator = KeyGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
-        )
-        keyGenerator.init(keyGenParameterSpec)
-        keyGenerator.generateKey()
-    }
-
-    private fun test() {
-        generateSecretKey(
-            KeyGenParameterSpec.Builder(
-                "MasterKey",
-                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
-            )
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .setUserAuthenticationRequired(true)
-                .setInvalidatedByBiometricEnrollment(true)
-                .build()
-        )
-
-        val cipher = getCipher()
-        val secretKey = getSecretKey()
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        biometricPrompt.authenticate(biometricPromptInfo, BiometricPrompt.CryptoObject(cipher))
-    }
-
-    private fun getSecretKey(): SecretKey {
-        val keyStore = KeyStore.getInstance("AndroidKeyStore")
-
-        keyStore.load(null)
-        return keyStore.getKey("MasterKey", null) as SecretKey
-    }
-
-    private fun getCipher() =
-        Cipher.getInstance("${KeyProperties.KEY_ALGORITHM_AES}/${KeyProperties.BLOCK_MODE_CBC}/${KeyProperties.ENCRYPTION_PADDING_PKCS7}")
-
     private fun unlock(): Boolean {
         passwordText.error = "Invalid"
 
