@@ -11,12 +11,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
 import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 import info.guardianproject.notepadbot.cacheword.ICacheWordSubscriber
 
 class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscriber {
     private val bottomAppBar by lazy { findViewById<BottomAppBar>(R.id.bottom_app_bar) }
+    private val fab by lazy { findViewById<FloatingActionButton>(R.id.fab) }
     private val navHostFragment: NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
     }
@@ -39,6 +41,17 @@ class MainActivity : AppCompatActivity(R.layout.main_activity), ICacheWordSubscr
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(bottom = systemBarInsets.bottom)
             insets
+        }
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.notesFragment -> fab.show()
+                else -> fab.hide()
+            }
+            when (destination.id) {
+                R.id.lockScreenFragment, R.id.setupFragment -> supportActionBar?.hide()
+                else -> supportActionBar?.show()
+            }
         }
     }
 
