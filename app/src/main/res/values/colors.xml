@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="greenish_white">#EDF2ED</color>
-    <color name="light_gray">#33FFFFFF</color>
-    <color name="gray">#CCCCCC</color>
-    <color name="light_neongreen">#35DC13</color>
-    <color name="dark_neongreen">#2B9926</color>
-    <color name="dark_green_actionbar">#288F24</color>
+    <color name="colorPrimary">#0277bd</color>
+    <color name="colorPrimaryVariant">#004c8c</color>
+    <color name="colorOnPrimary">@color/white</color>
+    <!-- Secondary brand color. -->
+    <color name="colorSecondary">#7b1fa2</color>
+    <color name="colorSecondaryVariant">#4a0072</color>
+    <color name="colorOnSecondary">@color/white</color>
     <color name="black">#000000</color>
+    <color name="grey">#AAAAAA</color>
     <color name="white">#FFFFFF</color>
+    <color name="iconColor">@color/black</color>
 </resources>

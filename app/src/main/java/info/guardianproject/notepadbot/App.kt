@@ -3,23 +3,22 @@ package info.guardianproject.notepadbot
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
+import androidx.constraintlayout.solver.Cache
 import info.guardianproject.notepadbot.cacheword.CacheWordService
 import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 
 class App : Application() {
-    var cWSettings: CacheWordSettings? = null
-        private set
+    val cWSettings: CacheWordSettings by lazy { CacheWordSettings(applicationContext) }
 
     override fun onCreate() {
         super.onCreate()
         // Apply the Google PRNG fixes to properly seed SecureRandom
         PRNGFixes.apply()
 
-        cWSettings = CacheWordSettings(applicationContext)
-        cWSettings!!.notificationIntent = PendingIntent.getActivity(
+        /*cWSettings!!.notificationIntent = PendingIntent.getActivity(
             applicationContext,
             0, Intent(this, NoteCipher::class.java),
             Intent.FLAG_ACTIVITY_NEW_TASK
-        )
+        )*/
     }
 }

@@ -81,8 +81,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    style="@style/ButtonTextSmall"
-			        android:background="@drawable/btn_green" 
                     android:text="@string/lock_screen_create_passphrase" />
 
             </LinearLayout>
@@ -118,8 +116,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    style="@style/ButtonTextSmall"
-			        android:background="@drawable/btn_green"
                     android:text="@string/lock_screen_open" />
 
             </LinearLayout>

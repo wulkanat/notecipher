@@ -17,7 +17,6 @@ package info.guardianproject.notepadbot
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -48,7 +47,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
     /**
      * Called when the activity is first created.
      */
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent != null) {
             dataStream = if (intent.hasExtra(Intent.EXTRA_STREAM)) {
@@ -62,11 +61,11 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
         notesListView = findViewById<View>(R.id.notesListView) as ListView
         notesListView!!.onItemClickListener =
             OnItemClickListener { _, _, _, id ->
-                val i = Intent(application, NoteEdit::class.java)
+                val i = Intent(this, NoteEdit::class.java)
                 i.putExtra(NotesDbAdapter.KEY_ROWID, id)
                 startActivityForResult(i, ACTIVITY_EDIT)
             }
-        registerForContextMenu(notesListView)
+        // registerForContextMenu(notesListView)
         mCacheWord = CacheWordActivityHandler(this, (application as App).cWSettings)
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
@@ -82,8 +81,6 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
             SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
         )
         notesListView!!.adapter = notesCursorAdapter
-
-        findViewById<View>(R.id.fab).setOnClickListener { createNote() }
     }
 
     override fun onPause() {
@@ -94,15 +91,6 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
     override fun onResume() {
         super.onResume()
         mCacheWord!!.onResume()
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        findViewById<View>(R.id.listlayout).setOnTouchListener { v, _ ->
-            if (mDbHelper != null && mDbHelper!!.isOpen) createNote()
-            v.performClick()
-            false
-        }
     }
 
     private fun closeDatabase() {
@@ -120,7 +108,8 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
             if (dataStream != null) importDataStream() else fillData()
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, getString(R.string.err_pass), Toast.LENGTH_LONG).show()
+            // TODO
+            // Snackbar.make(view, getString(R.string.err_pass), Snackbar.LENGTH_LONG)
         }
     }
 
@@ -137,13 +126,13 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
 
                 override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
                     notesCursorAdapter!!.swapCursor(cursor)
-                    val emptyTV = findViewById<View>(R.id.emptytext) as TextView
+                    /*val emptyTV = findViewById<View>(R.id.emptytext) as TextView
                     if (notesCursorAdapter!!.isEmpty) {
                         Toast.makeText(this@NoteCipher, R.string.on_start, Toast.LENGTH_LONG).show()
                         emptyTV.setText(R.string.no_notes)
                     } else {
                         emptyTV.text = ""
-                    }
+                    }*/
                 }
 
                 override fun onLoaderReset(loader: Loader<Cursor>) {}
@@ -151,28 +140,17 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menu.add(0, LOCK_ID, 0, R.string.menu_lock).apply {
-            setIcon(R.drawable.ic_lock)
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        }
-        menu.add(0, SETTINGS_ID, 0, R.string.settings).apply {
-            setIcon(R.drawable.ic_settings)
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        }
-
+        menuInflater.inflate(R.menu.notes_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            RE_KEY_ID -> return true
-            LOCK_ID -> {
+            R.id.lockScreenFragment -> {
                 if (!mCacheWord!!.isLocked) mCacheWord!!.manuallyLock()
                 return true
             }
-            SETTINGS_ID -> {
+            R.id.settingsFragment -> {
                 if (!mCacheWord!!.isLocked) {
                     startActivity(Intent(this, Settings::class.java))
                 }
@@ -364,6 +342,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
     }
 
     private fun showLockScreen() {
+        // findNavController().navigate(R.id.lock_screen)
         val intent = Intent(this, LockScreenActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("originalIntent", getIntent())

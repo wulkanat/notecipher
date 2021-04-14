@@ -17,7 +17,7 @@ class LinedEditText(context: Context?, attrs: AttributeSet?) :
     @Suppress("DEPRECATION")
     private val mPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
-        color = resources.getColor(R.color.gray)
+        color = resources.getColor(R.color.grey)
     }
     private val showLines = Settings.getNoteLinesOption(context!!)
 

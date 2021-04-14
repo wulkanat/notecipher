@@ -36,12 +36,12 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
         mCacheWord = CacheWordActivityHandler(this, (application as App).cWSettings)
         mViewCreatePassphrase = findViewById(R.id.llCreatePassphrase)
         mViewEnterPassphrase = findViewById(R.id.llEnterPassphrase)
-        mEnterPassphrase = findViewById<View>(R.id.editEnterPassphrase) as EditText
-        mNewPassphrase = findViewById<View>(R.id.editNewPassphrase) as EditText
-        mConfirmNewPassphrase = findViewById<View>(R.id.editConfirmNewPassphrase) as EditText
-        val vf = findViewById<View>(R.id.viewFlipper1) as ViewFlipper
-        val flipView1 = findViewById<View>(R.id.flipView1) as LinearLayout
-        val flipView2 = findViewById<View>(R.id.flipView2) as LinearLayout
+        mEnterPassphrase = findViewById(R.id.editEnterPassphrase)
+        mNewPassphrase = findViewById(R.id.editNewPassphrase)
+        mConfirmNewPassphrase = findViewById(R.id.editConfirmNewPassphrase)
+        val vf: ViewFlipper = findViewById(R.id.viewFlipper1)
+        val flipView1: LinearLayout = findViewById(R.id.flipView1)
+        val flipView2: LinearLayout = findViewById(R.id.flipView2)
         mSlider = TwoViewSlider(vf, flipView1, flipView2, mNewPassphrase, mConfirmNewPassphrase)
     }
 
@@ -152,7 +152,7 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
     private fun promptPassphrase() {
         mViewCreatePassphrase.visibility = View.GONE
         mViewEnterPassphrase.visibility = View.VISIBLE
-        mBtnOpen = findViewById<View>(R.id.btnOpen) as Button
+        mBtnOpen = findViewById(R.id.btnOpen)
         mBtnOpen.setOnClickListener {
             if (mEnterPassphrase.text.toString().isEmpty()) return@setOnClickListener
             // Check passphrase
@@ -172,7 +172,7 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
                     threadHandler
                 ) {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                        super.onReceiveResult(resultCode, resultData)
+                        // super.onReceiveResult(resultCode, resultData)
                         mBtnOpen.performClick()
                     }
                 })

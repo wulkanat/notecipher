@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/notesFragment">
+
+    <fragment
+        android:id="@+id/lockScreenFragment"
+        android:name="info.guardianproject.notepadbot.fragments.LockScreenFragment"
+        android:label="LockScreenFragment"
+        tools:layout="@layout/lockscreen_fragment">
+        <action
+            android:id="@+id/action_lockScreenFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="info.guardianproject.notepadbot.fragments.NotesFragment"
+        android:label="NotesFragment"
+        tools:layout="@layout/notes_fragment">
+        <action
+            android:id="@+id/action_notesFragment_to_lockScreenFragment"
+            app:destination="@id/lockScreenFragment" />
+        <action
+            android:id="@+id/action_notesFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="info.guardianproject.notepadbot.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>

@@ -7,43 +7,8 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="actionBarStyle">@style/Widget.NoteCipherTheme.ActionBar</item>
-    	<item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.NoteCipherTheme.ActionBar</item>
-    </style>
-    
-    <style name="Widget.NoteCipherTheme.ActionBar" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-	    <item name="android:background">@color/dark_green_actionbar</item>
-	    <item name="background">@color/dark_green_actionbar</item>
-	    <item name="android:titleTextStyle" tools:targetApi="11">@style/NoteCipherTheme.ActionBar.TitleTextStyle</item>
-		<item name="titleTextStyle">@style/NoteCipherTheme.ActionBar.TitleTextStyle</item>
-	</style>
-
-    <style name="NoteCipherTheme.ActionBar.TitleTextStyle" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-		<item name="android:textColor">@color/greenish_white</item>
-		<item name="android:textSize">22sp</item>
-	</style>
-    
-    <style name="padtext" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:typeface">monospace</item>
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="ButtonTextSmall">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">1dp</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="padtitle" parent="padtext">
-        <item name="android:background">@drawable/round_borders</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>

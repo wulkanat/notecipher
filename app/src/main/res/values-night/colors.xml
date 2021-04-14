@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#80deea</color>
+    <color name="colorPrimaryVariant">#b4ffff</color>
+    <color name="colorOnPrimary">@color/black</color>
+    <!-- Secondary brand color. -->
+    <color name="colorSecondary">#f48fb1</color>
+    <color name="colorSecondaryVariant">#ffc1e3</color>
+    <color name="colorOnSecondary">@color/black</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="iconColor">@color/white</color>
+</resources>

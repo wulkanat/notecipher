@@ -80,7 +80,7 @@ public class NoteEdit extends AppCompatActivity implements
         mTitleText = (EditText) findViewById(R.id.title);
         
         // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         if (savedInstanceState != null) {
             mRowId = savedInstanceState.getLong(NotesDbAdapter.KEY_ROWID);

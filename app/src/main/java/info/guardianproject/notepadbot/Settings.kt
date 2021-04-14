@@ -10,6 +10,7 @@ import androidx.core.app.NavUtils
 import androidx.fragment.app.commit
 import androidx.preference.PreferenceManager
 import info.guardianproject.notepadbot.cacheword.ICacheWordSubscriber
+import info.guardianproject.notepadbot.fragments.SettingsFragment
 
 class Settings : AppCompatActivity(), ICacheWordSubscriber {
     public override fun onCreate(savedInstanceState: Bundle?) {
