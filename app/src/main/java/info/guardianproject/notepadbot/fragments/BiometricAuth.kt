@@ -46,9 +46,13 @@ class BiometricAuth(private val fragment: Fragment) {
         }
     }
 
-    fun canUseBiometric() = fragment.requireContext()
-        .getSharedPreferences(encryptedKeyStore, MODE_PRIVATE)
-        .getString(encryptedKeyStore, null) != null
+    fun canUseBiometric() = when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+        BiometricManager.BIOMETRIC_SUCCESS -> fragment.requireContext()
+            .getSharedPreferences(encryptedKeyStore, MODE_PRIVATE)
+            .getString(encryptedKeyStore, null) != null
+        BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> false // TODO: separate?
+        else ->  false
+    }
 
     /**
      * Authenticate

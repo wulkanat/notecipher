@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-        <PreferenceCategory
-                android:title="@string/general_settings" >
-         		<Preference 
-			        android:key="cacheword_timeout_seconds"
-			        android:title="@string/change_timeout_prompt_title" />
-         		<EditTextPreference
-		            android:key="encrypted_secrets"
-		            android:title="@string/change_passphrase"
-		            android:dialogTitle="@string/change_passphrase" />
-         		<CheckBoxPreference
-			        android:key="use_lines_in_notes"
-			        android:title="@string/use_lines_in_notes"
-			        android:summary="@string/use_lines_in_notes_summ"
-			        android:defaultValue="@bool/notecipher_uselines_default" />
-         		<CheckBoxPreference
-			        android:key="cacheword_vibrate"
-			        android:title="@string/vibrate_when_unlocked"
-			        android:summary="@string/vibrate_when_unlocked_summ"
-			        android:defaultValue="@bool/cacheword_vibrate_default" />
-        </PreferenceCategory>
+    <PreferenceCategory android:title="@string/general_settings">
+        <CheckBoxPreference
+            android:defaultValue="@bool/notecipher_uselines_default"
+            android:key="use_lines_in_notes"
+            android:summary="@string/use_lines_in_notes_summ"
+            android:title="@string/use_lines_in_notes" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/cacheword_vibrate_default"
+            android:key="cacheword_vibrate"
+            android:summary="@string/vibrate_when_unlocked_summ"
+            android:title="@string/vibrate_when_unlocked" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Security">
+        <Preference
+            android:key="cacheword_timeout_seconds"
+            android:title="@string/change_timeout_prompt_title" />
+        <EditTextPreference
+            android:dialogTitle="@string/change_passphrase"
+            android:key="encrypted_secrets"
+            android:title="@string/change_passphrase" />
+        <SwitchPreference
+            android:key="use_biometric_auth"
+            android:title="Use Biometric Authentication"
+            android:summary="Use the biometric hardware of the device to unlock your notes">
+
+        </SwitchPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Danger Zone">
+        <Preference
+            android:key="reset"
+            android:title="Reset all data"
+            android:summary="There is no way to recover your password. If you lost yours, you can reset all data here."/>
+    </PreferenceCategory>
 </PreferenceScreen>
