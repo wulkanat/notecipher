@@ -5,5 +5,5 @@
     android:viewportHeight="108">
   <path
       android:pathData="M0,-0l108,0l0,108l-108,0z"
-      android:fillColor="@color/iconColor"/>
+      android:fillColor="@color/launcherIconBackground"/>
 </vector>

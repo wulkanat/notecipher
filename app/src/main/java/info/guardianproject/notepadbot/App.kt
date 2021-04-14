@@ -12,8 +12,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // Apply the Google PRNG fixes to properly seed SecureRandom
-        PRNGFixes.apply()
+
 
         /*cWSettings!!.notificationIntent = PendingIntent.getActivity(
             applicationContext,

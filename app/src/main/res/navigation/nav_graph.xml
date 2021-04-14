@@ -25,9 +25,21 @@
         <action
             android:id="@+id/action_notesFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_notesFragment_to_setupFragment"
+            app:destination="@id/setupFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="info.guardianproject.notepadbot.fragments.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/setupFragment"
+        android:name="info.guardianproject.notepadbot.fragments.SetupFragment"
+        android:label="SetupFragment"
+        tools:layout="@layout/setup_fragment" >
+        <action
+            android:id="@+id/action_setupFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 </navigation>
