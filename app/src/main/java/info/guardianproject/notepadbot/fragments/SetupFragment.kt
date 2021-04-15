@@ -26,7 +26,7 @@ class SetupFragment : Fragment(R.layout.setup_fragment) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.createPassword.editText?.setOnEditorActionListener { _, actionId, _ ->
+        binding.confirmPassword.editText?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     createKey()
@@ -37,9 +37,7 @@ class SetupFragment : Fragment(R.layout.setup_fragment) {
         }
 
         binding.continueWithoutEncryptionButton.setOnClickListener {
-            LockScreenFragmentDirections.actionLockScreenFragmentToSettingsFragment().let {
-                findNavController().navigate(it)
-            }
+            TODO()
         }
 
         binding.createKey.setOnClickListener { createKey() }
