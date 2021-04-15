@@ -67,6 +67,7 @@
     <string name="preference_use_lines">use_lines</string>
     <string name="preference_vibrate_when_unlocked">cacheword_vibrate</string>
     <string name="preference_theme">theme</string>
+    <string name="preference_text_size">text_size</string>
     <string name="preference_disable_encryption">disable_encryption</string>
     <string name="preference_change_lock_timeout">cacheword_timeout_seconds</string>
     <string name="preference_change_password">encrypted_secrets</string>

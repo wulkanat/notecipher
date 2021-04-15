@@ -83,7 +83,7 @@ public class NoteEdit extends AppCompatActivity implements
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         if (savedInstanceState != null) {
-            mRowId = savedInstanceState.getLong(NotesDbAdapter.KEY_ROWID);
+            mRowId = savedInstanceState.getLong(NotesDbAdapter.KEY_ROW_ID);
             mTextSize = savedInstanceState.getFloat(TEXT_SIZE, 0);
         }
 
@@ -228,7 +228,7 @@ public class NoteEdit extends AppCompatActivity implements
         saveState();
 
         if (mRowId != -1)
-            outState.putLong(NotesDbAdapter.KEY_ROWID, mRowId);
+            outState.putLong(NotesDbAdapter.KEY_ROW_ID, mRowId);
 
         if (mTextSize != 0)
             outState.putFloat(TEXT_SIZE, mTextSize);
@@ -356,7 +356,7 @@ public class NoteEdit extends AppCompatActivity implements
         if (mRowId != -1) {
             LoaderManager.getInstance(this).restartLoader(LOADER_ID, null, this);
         } else if (extras != null) {
-            mRowId = extras.getLong(NotesDbAdapter.KEY_ROWID);
+            mRowId = extras.getLong(NotesDbAdapter.KEY_ROW_ID);
             LoaderManager.getInstance(this).restartLoader(LOADER_ID, null, this);
         } else {
         	mImageView.setVisibility(View.GONE);

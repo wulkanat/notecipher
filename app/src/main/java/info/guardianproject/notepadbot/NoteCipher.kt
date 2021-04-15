@@ -62,7 +62,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
         notesListView!!.onItemClickListener =
             OnItemClickListener { _, _, _, id ->
                 val i = Intent(this, NoteEdit::class.java)
-                i.putExtra(NotesDbAdapter.KEY_ROWID, id)
+                i.putExtra(NotesDbAdapter.KEY_ROW_ID, id)
                 startActivityForResult(i, ACTIVITY_EDIT)
             }
         // registerForContextMenu(notesListView)
@@ -102,7 +102,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
 
     private fun unlockDatabase() {
         if (mCacheWord!!.isLocked) return
-        mDbHelper = NotesDbAdapter(mCacheWord, this)
+        mDbHelper = NotesDbAdapter(mCacheWord!!, this)
         try {
             mDbHelper!!.open()
             if (dataStream != null) importDataStream() else fillData()
@@ -280,7 +280,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
         intent: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, intent)
-        mDbHelper = NotesDbAdapter(mCacheWord, this)
+        mDbHelper = NotesDbAdapter(mCacheWord!!, this)
         fillData()
     }
 
@@ -302,7 +302,7 @@ class NoteCipher : AppCompatActivity(), ICacheWordSubscriber {
             } else {
                 val title = dataStream!!.lastPathSegment
                 val body = dataStream!!.path
-                NotesDbAdapter(mCacheWord, this).createNote(title, body, data, mimeType)
+                NotesDbAdapter(mCacheWord!!, this).createNote(title, body, data, mimeType)
                 Toast.makeText(this, getString(R.string.on_import, title), Toast.LENGTH_LONG).show()
 
                 // handleDelete();

@@ -12,8 +12,8 @@ import info.guardianproject.notepadbot.R
 import info.guardianproject.notepadbot.databinding.SetupFragmentBinding
 
 class SetupFragment : Fragment(R.layout.setup_fragment) {
-    private var _binding: SetupFragmentBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: SetupFragmentBinding
+    private val binding get() = _binding
     private val authenticator by lazy { BiometricAuth(this) }
 
     override fun onCreateView(

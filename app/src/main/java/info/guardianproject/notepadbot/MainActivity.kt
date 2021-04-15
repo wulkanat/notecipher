@@ -19,8 +19,8 @@ import info.guardianproject.notepadbot.cacheword.PRNGFixes
 import info.guardianproject.notepadbot.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
-    private var _binding: MainActivityBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: MainActivityBinding
+    private val binding get() = _binding
 
     private var _cacheWord: CacheWordActivityHandler? = null
     val cacheWord get() = _cacheWord!!

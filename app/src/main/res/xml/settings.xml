@@ -19,6 +19,10 @@
             android:entryValues="@array/themes_values"
             android:title="Theme">
         </ListPreference>
+        <SeekBarPreference
+            android:key="@string/preference_text_size"
+            android:enabled="false"
+            android:title="Text Size"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Security">
         <SwitchPreference

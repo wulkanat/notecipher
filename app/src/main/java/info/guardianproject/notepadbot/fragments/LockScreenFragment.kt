@@ -11,8 +11,8 @@ import info.guardianproject.notepadbot.R
 import info.guardianproject.notepadbot.databinding.LockscreenFragmentBinding
 
 class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
-    private var _binding: LockscreenFragmentBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: LockscreenFragmentBinding
+    private val binding get() = _binding
     private val authenticator by lazy { BiometricAuth(this) }
 
     override fun onCreateView(
