@@ -21,15 +21,27 @@ import java.io.IOException
 class SettingsFragment : PreferenceFragmentCompat() {
     private val activity: Activity by lazy { requireActivity() }
     private val mCacheWord by lazy { (activity as MainActivity).cacheWord }
+    private val authenticator by lazy { BiometricAuth(this) }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
+        val useBiometric =
+            findPreference<Preference>(getString(R.string.preference_use_biometric))!!
         if (mCacheWord.isLocked) {
-            findPreference<Preference>(getString(R.string.preference_disable_encryption))?.apply { isEnabled = false }
-            findPreference<Preference>(getString(R.string.preference_change_lock_timeout))?.apply { isEnabled = false }
-            findPreference<Preference>(getString(R.string.preference_change_passphrase))?.apply { isEnabled = false }
-            findPreference<Preference>(getString(R.string.preference_use_biometric))?.apply { isEnabled = false }
+            findPreference<Preference>(getString(R.string.preference_disable_encryption))!!.apply {
+                isEnabled = false
+            }
+            findPreference<Preference>(getString(R.string.preference_change_lock_timeout))!!.apply {
+                isEnabled = false
+            }
+            findPreference<Preference>(getString(R.string.preference_change_passphrase))!!.apply {
+                isEnabled = false
+            }
+            useBiometric.apply { isEnabled = false }
+        }
+        if (!authenticator.canSupportBiometric()) {
+            useBiometric.apply { isEnabled = false }
         }
 
         findPreference<Preference>(getString(R.string.preference_change_lock_timeout))!!
@@ -42,6 +54,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 mCacheWord.vibrateSetting = (newValue as Boolean)
                 true
             }
+        useBiometric.setOnPreferenceChangeListener { preference, newValue ->
+            if (newValue == true) {
+                authenticator.setupBiometricAuthentication(onFail = {
+                    TODO()
+                })
+            } else {
+                authenticator.deleteBiometricAuthentication()
+            }
+            true
+        }
         findPreference<Preference>(getString(R.string.preference_change_passphrase))!!
             .setOnPreferenceChangeListener { _, newValue ->
                 try {
@@ -69,8 +91,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     ) = super.onCreateView(inflater, container, savedInstanceState)?.apply {
         ViewCompat.setOnApplyWindowInsetsListener(this@apply) { v, insets ->
             val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBarInsets.left, systemBarInsets.top,
-                         systemBarInsets.right, systemBarInsets.bottom)
+            v.setPadding(
+                systemBarInsets.left, systemBarInsets.top,
+                systemBarInsets.right, systemBarInsets.bottom
+            )
 
             insets
         }

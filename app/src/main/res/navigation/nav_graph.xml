@@ -12,7 +12,9 @@
         tools:layout="@layout/lockscreen_fragment">
         <action
             android:id="@+id/action_lockScreenFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/notesFragment"
@@ -21,10 +23,14 @@
         tools:layout="@layout/notes_fragment">
         <action
             android:id="@+id/action_notesFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_notesFragment_to_lockScreenFragment"
-            app:destination="@id/lockScreenFragment" />
+            app:destination="@id/lockScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_notesFragment_to_setupFragment"
             app:destination="@id/setupFragment" />

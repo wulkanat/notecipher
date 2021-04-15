@@ -81,10 +81,10 @@ class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
     }
 
     override fun onBackPressed() {
-        if (findNavController().currentBackStackEntry?.destination?.id == R.id.lockScreenFragment) {
-            finish()
-        } else {
-            super.onBackPressed()
+        // Yeah. I really hate that solution, but it seems to be pretty reliable
+        when (findNavController().currentBackStackEntry?.destination?.id) {
+            R.id.lockScreenFragment, R.id.setupFragment -> finish()
+            else -> super.onBackPressed()
         }
     }
 

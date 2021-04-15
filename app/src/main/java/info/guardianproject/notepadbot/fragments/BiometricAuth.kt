@@ -1,7 +1,6 @@
 package info.guardianproject.notepadbot.fragments
 
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.biometric.BiometricManager
@@ -11,11 +10,14 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import info.guardianproject.notepadbot.MainActivity
 import java.nio.charset.Charset
+import java.nio.charset.CharsetEncoder
 import java.security.GeneralSecurityException
 import java.security.KeyStore
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 
 /**
  * Wrapper around the biometric authentication
@@ -23,10 +25,13 @@ import javax.crypto.SecretKey
  * Also handles locking and unlocking of the notes section
  */
 class BiometricAuth(private val fragment: Fragment) {
-    private val masterKeyAlias = "MasterKey"
-    private val androidKeyStore = "AndroidKeyStore"
+    companion object {
+        private const val MASTER_KEY_ALIAS = "MasterKey"
+        private const val ANDROID_KEY_STORE = "AndroidKeyStore"
 
-    private val encryptedKeyStore = "encryptedKeyStore"
+        private const val ENCRYPTED_KEY_STORE = "encryptedKeyStore"
+        private const val ENCRYPTION_IV_STORE = "encryptionIvStore"
+    }
 
     private val biometricManager by lazy { BiometricManager.from(fragment.requireContext()) }
     private val biometricPromptInfo by lazy {
@@ -40,19 +45,22 @@ class BiometricAuth(private val fragment: Fragment) {
     private val cacheWord by lazy { (fragment.activity as MainActivity).cacheWord }
 
     private fun generateSecretKey(keyGenParameterSpec: KeyGenParameterSpec) {
-        KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, androidKeyStore).apply {
+        KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE).apply {
             init(keyGenParameterSpec)
             generateKey()
         }
     }
 
-    fun canUseBiometric() = when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
-        BiometricManager.BIOMETRIC_SUCCESS -> fragment.requireContext()
-            .getSharedPreferences(encryptedKeyStore, MODE_PRIVATE)
-            .getString(encryptedKeyStore, null) != null
-        BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> false // TODO: separate?
-        else ->  false
-    }
+    fun canUseBiometric() = canSupportBiometric() && fragment.requireContext()
+        .getSharedPreferences(ENCRYPTED_KEY_STORE, MODE_PRIVATE)
+        .getString(ENCRYPTED_KEY_STORE, null) != null
+
+    fun canSupportBiometric() =
+        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> true
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> false // TODO: separate?
+            else -> false
+        }
 
     /**
      * Authenticate
@@ -65,16 +73,19 @@ class BiometricAuth(private val fragment: Fragment) {
         onFail: () -> Unit = {}
     ) {
         password ?: run {
-            val encryptedPassword = fragment.requireContext()
-                .getSharedPreferences(encryptedKeyStore, MODE_PRIVATE)
-                .getString(encryptedKeyStore, null)
+            val sharedPreferences = fragment.requireContext()
+                .getSharedPreferences(ENCRYPTED_KEY_STORE, MODE_PRIVATE)
+            val encryptedPassword = sharedPreferences.getString(ENCRYPTED_KEY_STORE, null)
                 ?: throw Exception("User tried to use Biometric auth without it being enabled")
+            val encryptionIv = sharedPreferences.getString(ENCRYPTION_IV_STORE, null)?.let {
+                Base64.getDecoder().decode(it)
+            } ?: throw Exception("User tried to use Biometric auth without it being enabled")
 
             generateSecretKey(buildKey())
             // Exceptions are unhandled within this snippet.
             val cipher = getCipher()
             val secretKey = getSecretKey()
-            cipher.init(Cipher.DECRYPT_MODE, secretKey)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(encryptionIv))
             val prompt =
                 BiometricPrompt(fragment, ContextCompat.getMainExecutor(fragment.requireContext()),
                     object : BiometricPrompt.AuthenticationCallback() {
@@ -90,10 +101,10 @@ class BiometricAuth(private val fragment: Fragment) {
                             super.onAuthenticationSucceeded(result)
 
                             val decryptedPassword = result.cryptoObject?.cipher?.doFinal(
-                                encryptedPassword.toByteArray(Charset.defaultCharset())
+                                Base64.getDecoder().decode(encryptedPassword)
                             ) ?: throw Exception("Decryption failed")
 
-                            cacheWord.setPassphrase(CharArray(decryptedPassword.size) { decryptedPassword[it].toChar() } )
+                            cacheWord.setPassphrase(decryptedPassword.decodeToString().toCharArray())
                             onSuccess()
                         }
 
@@ -116,6 +127,35 @@ class BiometricAuth(private val fragment: Fragment) {
         }
     }
 
+    fun setupBiometricAuthentication(
+        onSuccess: () -> Unit = {},
+        onFail: () -> Unit = {}
+    ) {
+        /*AlertDialog.Builder(fragment.requireActivity()).apply {
+            setTitle("Enter current password")
+            val input = TextInputLayout(fragment.requireContext()).apply {
+                editText?.apply {
+                    inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                }
+                hint = "Current password"
+            }
+            setView(input)
+            setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                setPassword(input.editText?.text.toString(), true, onSuccess, onFail)
+            }
+            setNegativeButton("Cancel") { dialog: DialogInterface, _: Int -> dialog.cancel() }
+        }.create().show()*/
+        SetupBiometricDialogFragment()
+            .show(fragment.requireActivity().supportFragmentManager, "AddBioDialog")
+    }
+
+    fun deleteBiometricAuthentication() {
+        fragment.requireContext()
+            .getSharedPreferences(ENCRYPTED_KEY_STORE, MODE_PRIVATE).edit {
+                remove(ENCRYPTED_KEY_STORE)
+            }
+    }
+
     /**
      * Set a new password
      */
@@ -129,7 +169,7 @@ class BiometricAuth(private val fragment: Fragment) {
             // https://developer.android.com/training/sign-in/biometric-auth#kotlin
             generateSecretKey(
                 KeyGenParameterSpec.Builder(
-                    masterKeyAlias, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                    MASTER_KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                 )
                     .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
@@ -140,6 +180,7 @@ class BiometricAuth(private val fragment: Fragment) {
             val cipher = getCipher()
             val secretKey = getSecretKey()
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            val iv = cipher.parameters.getParameterSpec(IvParameterSpec::class.java).iv
 
             val prompt =
                 BiometricPrompt(fragment, ContextCompat.getMainExecutor(fragment.requireContext()),
@@ -157,10 +198,11 @@ class BiometricAuth(private val fragment: Fragment) {
 
                             val encryptedPassword = result.cryptoObject?.cipher?.doFinal(
                                 password.toByteArray(Charset.defaultCharset())
-                            ).toString()
+                            )
                             fragment.requireContext()
-                                .getSharedPreferences(encryptedKeyStore, MODE_PRIVATE).edit {
-                                    putString(encryptedKeyStore, encryptedPassword)
+                                .getSharedPreferences(ENCRYPTED_KEY_STORE, MODE_PRIVATE).edit {
+                                    putString(ENCRYPTED_KEY_STORE, Base64.getEncoder().encodeToString(encryptedPassword))
+                                    putString(ENCRYPTION_IV_STORE, Base64.getEncoder().encodeToString(iv))
                                 }
 
                             cacheWord.setPassphrase(password.toCharArray())
@@ -180,7 +222,7 @@ class BiometricAuth(private val fragment: Fragment) {
     }
 
     private fun buildKey() = KeyGenParameterSpec.Builder(
-        masterKeyAlias,
+        MASTER_KEY_ALIAS,
         KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
     ).setBlockModes(KeyProperties.BLOCK_MODE_CBC)
         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
@@ -192,10 +234,9 @@ class BiometricAuth(private val fragment: Fragment) {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")
 
         keyStore.load(null)
-        return keyStore.getKey(masterKeyAlias, null) as SecretKey
+        return keyStore.getKey(MASTER_KEY_ALIAS, null) as SecretKey
     }
 
     private fun getCipher() =
         Cipher.getInstance("${KeyProperties.KEY_ALGORITHM_AES}/${KeyProperties.BLOCK_MODE_CBC}/${KeyProperties.ENCRYPTION_PADDING_PKCS7}")
-
 }

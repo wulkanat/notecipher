@@ -42,6 +42,7 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
         }
 
         binding.unlockButton.setOnClickListener { unlock() }
+        binding.useBiometricButton.setOnClickListener { unlock(biometricOnly = true) }
 
         if (!authenticator.canUseBiometric()) {
             binding.useBiometricButton.isEnabled = false
@@ -49,15 +50,16 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
         }
     }
 
-    private fun unlock() {
+    private fun unlock(biometricOnly: Boolean = false) {
         binding.unlockButton.isEnabled = false
         binding.useBiometricButton.isEnabled = false
 
-        authenticator.authenticate(binding.passwordInput.editText?.text.toString(),
-        onFail = {
-            binding.passwordInput.error = "Wrong Password"
-            binding.unlockButton.isEnabled = true
-            binding.useBiometricButton.isEnabled = authenticator.canUseBiometric()
-        })
+        authenticator.authenticate(
+            if (biometricOnly) null else binding.passwordInput.editText?.text.toString(),
+            onFail = {
+                binding.passwordInput.error = "Wrong Password"
+                binding.unlockButton.isEnabled = true
+                binding.useBiometricButton.isEnabled = authenticator.canUseBiometric()
+            })
     }
 }
