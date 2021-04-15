@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.transition.MaterialSharedAxis
 import info.guardianproject.notepadbot.MainActivity
 import info.guardianproject.notepadbot.NConstants
 import info.guardianproject.notepadbot.R

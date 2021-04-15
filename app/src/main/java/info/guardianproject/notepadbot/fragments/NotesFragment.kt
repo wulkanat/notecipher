@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import info.guardianproject.notepadbot.NotesAdapter
 import info.guardianproject.notepadbot.R
+import info.guardianproject.notepadbot.StaggeredGridLayoutAnimationController
 import info.guardianproject.notepadbot.databinding.NotesFragmentBinding
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -54,6 +56,9 @@ class NotesFragment : Fragment(R.layout.notes_fragment) {
 
             insets
         }
+
+        val animation = AnimationUtils.loadAnimation(context, R.anim.item_anim_from_bottom)
+        binding.notesList.layoutAnimation = StaggeredGridLayoutAnimationController(animation, 0.1f, 0.1f)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

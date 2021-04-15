@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialSharedAxis
 import info.guardianproject.notepadbot.R
 import info.guardianproject.notepadbot.databinding.LockscreenFragmentBinding
 
@@ -19,10 +20,9 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = LockscreenFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ) = LockscreenFragmentBinding.inflate(inflater, container, false).also {
+        _binding = it
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.passwordInput.editText?.setOnEditorActionListener { _, actionId, _ ->

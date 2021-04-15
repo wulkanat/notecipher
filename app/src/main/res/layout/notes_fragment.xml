@@ -6,7 +6,7 @@
     android:clipToPadding="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <info.guardianproject.notepadbot.GridRecyclerView
         android:id="@+id/notes_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
