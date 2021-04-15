@@ -15,6 +15,7 @@ import androidx.navigation.ui.onNavDestinationSelected
 import info.guardianproject.notepadbot.cacheword.CacheWordActivityHandler
 import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 import info.guardianproject.notepadbot.cacheword.ICacheWordSubscriber
+import info.guardianproject.notepadbot.cacheword.PRNGFixes
 import info.guardianproject.notepadbot.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
