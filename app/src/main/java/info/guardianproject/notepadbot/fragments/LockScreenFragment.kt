@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
+import info.guardianproject.notepadbot.MainActivity
 import info.guardianproject.notepadbot.R
 import info.guardianproject.notepadbot.databinding.LockscreenFragmentBinding
 
@@ -25,6 +26,15 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as MainActivity).apply {
+            binding.bottomAppBar.performHide()
+            binding.fab.hide()
+
+            this@LockScreenFragment.binding.continueWithoutEncryptionButton.setOnClickListener {
+                lockScreenToSettings()
+            }
+        }
+
         binding.passwordInput.editText?.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
@@ -32,12 +42,6 @@ class LockScreenFragment : Fragment(R.layout.lockscreen_fragment) {
                     true
                 }
                 else -> false
-            }
-        }
-
-        binding.continueWithoutEncryptionButton.setOnClickListener {
-            LockScreenFragmentDirections.actionLockScreenFragmentToSettingsFragment().let {
-                findNavController().navigate(it)
             }
         }
 

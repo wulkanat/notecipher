@@ -11,7 +11,8 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+// import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+// TODO: use LiveData
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -63,7 +64,7 @@ public class CacheWordHandler {
 
     /**
      * Initializes the CacheWordHandler with the default CacheWordSettings
-     * @see CacheWordHandler(Context context, CacheWordSettings settings)
+     *  // @see CacheWordHandler(Context context, CacheWordSettings settings)
      * @param context
      */
     public CacheWordHandler(Context context) {
@@ -274,14 +275,16 @@ public class CacheWordHandler {
     // /////////////////////////////////////////
 
     private void registerBroadcastReceiver() {
+        // TODO: use LiveData
+        /*
         LocalBroadcastManager.getInstance(mContext).registerReceiver(
                 mCacheWordReceiver,
-                new IntentFilter(Constants.INTENT_NEW_SECRETS));
+                new IntentFilter(Constants.INTENT_NEW_SECRETS));*/
     }
 
     private void unregisterBroadcastRecevier() {
-        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mCacheWordReceiver);
-
+        // LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mCacheWordReceiver);
+        // TODO: use LiveData
     }
 
     private void checkCacheWordState() {

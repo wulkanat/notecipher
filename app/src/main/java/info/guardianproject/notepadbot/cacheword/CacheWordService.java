@@ -14,7 +14,8 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+// import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+// TODO: use LiveData<>
 
 import java.util.Observable;
 import java.util.Observer;
@@ -157,8 +158,10 @@ public class CacheWordService extends Service implements Observer {
         else
             goBackground();
         resetTimeout();
-        if(notify)
-            LocalBroadcastManager.getInstance(this).sendBroadcast(mBroadcastIntent);
+        if (notify) {
+            // LocalBroadcastManager.getInstance(this).sendBroadcast(mBroadcastIntent);
+            // TODO: use LiveData
+        }
     }
 
     private void expirePassphrase() {
@@ -171,7 +174,8 @@ public class CacheWordService extends Service implements Observer {
             }
         }
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(mBroadcastIntent);
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(mBroadcastIntent);
+        // TODO: use LiveData
 
         if( mIsForegrounded ) {
             stopForeground(true);

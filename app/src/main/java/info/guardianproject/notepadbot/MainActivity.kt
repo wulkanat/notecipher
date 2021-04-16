@@ -19,10 +19,11 @@ import info.guardianproject.notepadbot.cacheword.PRNGFixes
 import info.guardianproject.notepadbot.databinding.MainActivityBinding
 import info.guardianproject.notepadbot.fragments.LockScreenFragment
 import info.guardianproject.notepadbot.fragments.NotesFragment
+import info.guardianproject.notepadbot.fragments.SettingsFragment
 
 class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
     private lateinit var _binding: MainActivityBinding
-    private val binding get() = _binding
+    val binding get() = _binding
 
     private var _cacheWord: CacheWordActivityHandler? = null
     val cacheWord get() = _cacheWord!!
@@ -41,6 +42,9 @@ class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
         supportFragmentManager.commit {
             add<LockScreenFragment>(R.id.nav_host_fragment)
         }
+
+        binding.bottomAppBar.performHide()
+        binding.bottomAppBar.visibility = View.GONE
         // setupActionBarWithNavController(this, navController)
         // get around some weird behavior
         // navController.navigate(R.id.lockScreenFragment)
@@ -118,8 +122,6 @@ class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
 
             replace(R.id.nav_host_fragment, nextFragment)
         }
-        binding.bottomAppBar.performHide()
-        binding.fab.hide()
     }
 
     fun unlock() {
@@ -132,8 +134,21 @@ class MainActivity : AppCompatActivity(), ICacheWordSubscriber {
 
             replace(R.id.nav_host_fragment, nextFragment)
         }
-        binding.bottomAppBar.performShow()
-        binding.fab.show()
+    }
+
+    fun lockScreenToSettings() {
+        supportFragmentManager.commit {
+            val previousFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+            val nextFragment = SettingsFragment()
+
+            previousFragment!!.exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+            nextFragment.enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true)
+            nextFragment.returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+            previousFragment.reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+
+            replace(R.id.nav_host_fragment, nextFragment)
+            addToBackStack(null)
+        }
     }
 
     override fun onPause() {
