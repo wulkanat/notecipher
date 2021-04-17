@@ -3,7 +3,12 @@ package info.guardianproject.notepadbot.compose
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -12,16 +17,26 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.*
 import java.util.concurrent.locks.Lock
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.navigation.fragment.fragment
+import info.guardianproject.notepadbot.R
+import info.guardianproject.notepadbot.fragments.SettingsFragment
 
 class MainScreenActivity : AppCompatActivity() {
+    @ExperimentalAnimationApi
     @ExperimentalAnimatedInsets
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,47 +53,31 @@ class MainScreenActivity : AppCompatActivity() {
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
 
-    Scaffold(
-        bottomBar = {
-            /*BottomAppBar(
-                contentPadding = LocalWindowInsets.current.navigationBars.toPaddingValues(),
-                // cutoutShape = CircleShape,
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Lock, contentDescription = "Lock")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
-                }
-            }*/
-        },
-        isFloatingActionButtonDocked = true,
-        floatingActionButton = {
-            /*FloatingActionButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Note")
-            }*/
+    NavHost(navController, startDestination = "lockScreen") {
+        composable("lockScreen") {
+            LockScreen(Modifier.navigationBarsWithImePadding())
         }
-    ) {
-        NavHost(navController, startDestination = "lockScreen") {
-            composable("lockScreen") {
-                LockScreen(Modifier.navigationBarsWithImePadding())
-            }
-            composable("mainScreen") {
-                Text("This is the main screen")
-            }
+        composable("mainScreen") {
+            Text("This is the main screen")
         }
+        composable("writeNote") {
+            WriteNote()
+        }
+        composable("settingsScreen") {
+
+        }
+        fragment<SettingsFragment>(R.id.settingsFragment)
     }
 }
 
-@Composable
-fun NoteCipherTheme(content: @Composable () -> Unit) {
-    MaterialTheme(content = content)
-}
-
+@ExperimentalAnimationApi
+@ExperimentalAnimatedInsets
 @Preview
 @Composable
 fun PreviewMain() {
