@@ -4,6 +4,9 @@ package info.guardianproject.notepadbot.cacheword;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.security.GeneralSecurityException;
 
 import javax.crypto.SecretKey;
@@ -62,7 +65,8 @@ public class PassphraseSecrets implements ICachedSecrets {
      * @param x_passphrase
      * @return
      */
-    public static PassphraseSecrets initializeSecrets(Context ctx, char[] x_passphrase) {
+    @Nullable
+    public static PassphraseSecrets initializeSecrets(@NonNull Context ctx, @NonNull char[] x_passphrase) {
         PassphraseSecretsImpl crypto = new PassphraseSecretsImpl();
         try {
             SecretKeySpec secretKey = (SecretKeySpec) crypto.generateSecretKey();
@@ -91,7 +95,8 @@ public class PassphraseSecrets implements ICachedSecrets {
      * @return
      * @throws GeneralSecurityException
      */
-    public static PassphraseSecrets fetchSecrets(Context ctx, char[] x_passphrase)
+    @NonNull
+    public static PassphraseSecrets fetchSecrets(@NonNull Context ctx, @NonNull char[] x_passphrase)
             throws GeneralSecurityException {
         byte[] preparedSecret         = SecretsManager.getBytes(ctx, Constants.SHARED_PREFS_SECRETS);
         SerializedSecretsV1 ss        = new SerializedSecretsLoader().loadSecrets(preparedSecret);
@@ -129,7 +134,8 @@ public class PassphraseSecrets implements ICachedSecrets {
      * @param x_new_passphrase WIPED
      * @return
      */
-    public static PassphraseSecrets changePassphrase(Context ctx, PassphraseSecrets current_secrets, char[] x_new_passphrase ) {
+    @Nullable
+    public static PassphraseSecrets changePassphrase(@NonNull Context ctx, @NonNull PassphraseSecrets current_secrets, @NonNull char[] x_new_passphrase ) {
         byte[] x_rawSecretKey = null;
         try {
             x_rawSecretKey      = current_secrets.getSecretKey().getEncoded();

@@ -4,10 +4,12 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.constraintlayout.solver.Cache
+import dagger.hilt.android.HiltAndroidApp
 import info.guardianproject.notepadbot.cacheword.CacheWordService
 import info.guardianproject.notepadbot.cacheword.CacheWordSettings
 
 class App : Application() {
+    // TODO: remove
     val cWSettings: CacheWordSettings by lazy { CacheWordSettings(applicationContext) }
 
     override fun onCreate() {

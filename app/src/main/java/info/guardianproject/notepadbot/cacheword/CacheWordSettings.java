@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.Observable;
 
 import info.guardianproject.notepadbot.R;
@@ -21,7 +23,7 @@ public class CacheWordSettings extends Observable {
      * Creates a CacheWordSettings object with all the default settings
      * @param context your app's context, used to read SharedPreferences
      */
-    public CacheWordSettings(Context context) {
+    public CacheWordSettings(@NonNull Context context) {
         mContext = context;
         loadDefaults();
     }
@@ -53,7 +55,7 @@ public class CacheWordSettings extends Observable {
             ed.putBoolean(Constants.SHARED_PREFS_USE_NOTIFICATION, def_notification);
         }
 
-        ed.commit();
+        ed.apply();
     }
 
     /**
@@ -83,7 +85,7 @@ public class CacheWordSettings extends Observable {
         if(seconds >= 0 && seconds != getTimeoutSeconds()) {
             Editor ed = mContext.getSharedPreferences(Constants.SHARED_PREFS, 0).edit();
             ed.putInt(Constants.SHARED_PREFS_TIMEOUT_SECONDS, seconds);
-            ed.commit();
+            ed.apply();
             Log.d(TAG, "setTimeoutSeconds() seconds=" + seconds);
             notifyObservers();
         }
@@ -116,7 +118,7 @@ public class CacheWordSettings extends Observable {
         if(vibrate != getVibrateSetting()) {
             Editor ed = mContext.getSharedPreferences(Constants.SHARED_PREFS, 0).edit();
             ed.putBoolean(Constants.SHARED_PREFS_VIBRATE, vibrate);
-            ed.commit();
+            ed.apply();
             Log.d(TAG, "setVibrateSetting() vibrate = " + vibrate);
             notifyObservers();
         }
@@ -148,7 +150,7 @@ public class CacheWordSettings extends Observable {
         if(enabled!= getNotificationEnabled()) {
             Editor ed = mContext.getSharedPreferences(Constants.SHARED_PREFS, 0).edit();
             ed.putBoolean(Constants.SHARED_PREFS_USE_NOTIFICATION, enabled);
-            ed.commit();
+            ed.apply();
             Log.d(TAG, "setEnableNotification() enabled=" + enabled);
             notifyObservers();
         }

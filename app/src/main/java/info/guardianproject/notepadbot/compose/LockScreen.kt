@@ -16,17 +16,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import info.guardianproject.notepadbot.R
+import info.guardianproject.notepadbot.database.NoteCipherAmbient
 
 @Preview
 @Composable
 fun PreviewLockScreen() {
-    LockScreen()
+    // LockScreen()
 }
 
 @Composable
@@ -58,9 +61,7 @@ fun PasswordTextField(
 }
 
 @Composable
-fun LockScreen(
-    modifier: Modifier = Modifier,
-) {
+fun LockScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     Box(
@@ -83,6 +84,7 @@ fun LockScreen(
         Column(Modifier.fillMaxWidth()) {
             var password by remember { mutableStateOf(TextFieldValue("")) }
             var canEdit by remember { mutableStateOf(true) }
+            val context = LocalContext.current
 
             Spacer(Modifier.size(16.dp))
             PasswordTextField(
@@ -91,17 +93,23 @@ fun LockScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = canEdit,
                 keyboardActions = KeyboardActions(
-                    onDone = { canEdit = false }
+                    onDone = {
+                        canEdit = false
+                        NoteCipherAmbient.unlock(context, password.text)
+                    }
                 )
             )
             Spacer(Modifier.size(16.dp))
             Row {
-                OutlinedButton(onClick = { canEdit = false }, enabled = canEdit) {
+                OutlinedButton(onClick = {
+                    canEdit = false
+                }, enabled = canEdit) {
                     Text("Biometric")
                 }
                 Spacer(Modifier.size(16.dp))
                 Button(onClick = { canEdit = false }, Modifier.fillMaxWidth(), enabled = canEdit) {
                     Text("Unlock")
+                    NoteCipherAmbient.unlock(context, password.text)
                 }
             }
         }

@@ -1,50 +1,50 @@
+package info.guardianproject.notepadbot.cacheword
 
-package info.guardianproject.notepadbot.cacheword;
+import android.content.Context
+import info.guardianproject.notepadbot.cacheword.SecretsManager
+import android.content.SharedPreferences
+import android.util.Base64
+import info.guardianproject.notepadbot.R
+import info.guardianproject.notepadbot.cacheword.PRNGFixes
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.util.Base64;
-
-import info.guardianproject.notepadbot.R;
-
-public class SecretsManager {
-    private static boolean prngFixesApplied = false;
-
-    public static boolean isInitialized(Context ctx) {
-        possiblyApplyPRNGFixes(ctx);
-        return getPrefs(ctx).getBoolean(Constants.SHARED_PREFS_INITIALIZED, false);
+object SecretsManager {
+    private var prngFixesApplied = false
+    @JvmStatic
+    fun isInitialized(ctx: Context): Boolean {
+        possiblyApplyPRNGFixes(ctx)
+        return getPrefs(ctx).getBoolean(Constants.SHARED_PREFS_INITIALIZED, false)
     }
 
-    public static boolean saveBytes(Context ctx, String key, byte[] value) {
-        String encoded = Base64.encodeToString(value, Base64.DEFAULT);
-        Editor e = getPrefs(ctx).edit();
-        e.putString(key, encoded);
-        return e.commit();
+    @JvmStatic
+    fun saveBytes(ctx: Context, key: String?, value: ByteArray?): Boolean {
+        val encoded = Base64.encodeToString(value, Base64.DEFAULT)
+        val e = getPrefs(ctx).edit()
+        e.putString(key, encoded)
+        return e.commit()
     }
 
-    public static byte[] getBytes(Context ctx, String key) {
-        String encoded = getPrefs(ctx).getString(key, null);
-        if( encoded == null ) return null;
-        return Base64.decode(encoded, Base64.DEFAULT);
+    @JvmStatic
+    fun getBytes(ctx: Context, key: String?): ByteArray? {
+        val encoded = getPrefs(ctx).getString(key, null) ?: return null
+        return Base64.decode(encoded, Base64.DEFAULT)
     }
 
-    public static boolean setInitialized(Context ctx, boolean initialized) {
-        Editor e = getPrefs(ctx).edit();
-        e.putBoolean(Constants.SHARED_PREFS_INITIALIZED, initialized);
-        return e.commit();
+    @JvmStatic
+    fun setInitialized(ctx: Context, initialized: Boolean): Boolean {
+        val e = getPrefs(ctx).edit()
+        e.putBoolean(Constants.SHARED_PREFS_INITIALIZED, initialized)
+        return e.commit()
     }
 
-    private static void possiblyApplyPRNGFixes(Context ctx) {
-        if( !prngFixesApplied && ctx.getResources().getBoolean(R.bool.cacheword_apply_android_securerandom_fixes) ) {
-            PRNGFixes.apply();
-            prngFixesApplied = true;
+    private fun possiblyApplyPRNGFixes(ctx: Context) {
+        if (!prngFixesApplied && ctx.resources.getBoolean(R.bool.cacheword_apply_android_securerandom_fixes)) {
+            PRNGFixes.apply()
+            prngFixesApplied = true
         }
     }
 
-    private static SharedPreferences getPrefs(Context ctx) {
+    private fun getPrefs(ctx: Context): SharedPreferences {
         return ctx
-                .getSharedPreferences(Constants.SHARED_PREFS, Constants.SHARED_PREFS_PRIVATE_MODE);
+            .getSharedPreferences(Constants.SHARED_PREFS, Constants.SHARED_PREFS_PRIVATE_MODE)
     }
-
 }
