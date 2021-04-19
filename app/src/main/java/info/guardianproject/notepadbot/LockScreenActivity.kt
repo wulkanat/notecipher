@@ -166,16 +166,17 @@ class LockScreenActivity : AppCompatActivity(), ICacheWordSubscriber {
         }
         mEnterPassphrase.setOnEditorActionListener(OnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_NULL || actionId == EditorInfo.IME_ACTION_GO) {
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                @Suppress("DEPRECATION") val threadHandler = Handler()
-                imm.hideSoftInputFromWindow(v.windowToken, 0, object : ResultReceiver(
+                // val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                // @Suppress("DEPRECATION") val threadHandler = Handler()
+                mBtnOpen.performClick()
+                /*imm.hideSoftInputFromWindow(v.windowToken, 0, object : ResultReceiver(
                     threadHandler
                 ) {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
                         super.onReceiveResult(resultCode, resultData)
                         mBtnOpen.performClick()
                     }
-                })
+                })*/
                 return@OnEditorActionListener true
             }
             false
